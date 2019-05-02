@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<manifest>
+    <application name="CalibratedBlobDiameters">
+        <crown name="CalibratedBlobDiameters">
+            <desc>user script</desc>
+            <serves/>
+        </crown>
+        <meta key="author">AppSpace Sample</meta>
+        <meta key="version">2.5.0</meta>
+        <meta key="licensed">false</meta>
+        <meta key="priority">low</meta>
+        <meta key="tags">Algorithm,Image,Calibration,Measurement</meta>
+        <meta key="read-protected">false</meta>
+        <meta key="copy-protected">false</meta>
+        <entry path="pages" default="Viewer.msdd">
+            <file type="application/zip">Viewer.msdd</file>
+        </entry>
+        <entry path="resources">
+            <file type="image">coins.bmp</file>
+            <file type="image">pose.bmp</file>
+        </entry>
+        <entry path="scripts" default="CalibratedBlobDiameters.lua">
+            <file type="text/x-lua">CalibratedBlobDiameters.lua</file>
+        </entry>
+    </application>
+</manifest>
