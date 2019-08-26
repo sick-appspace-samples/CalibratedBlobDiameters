@@ -12,8 +12,8 @@
         <meta key="tags">Algorithm,Image,Calibration,Measurement</meta>
         <meta key="read-protected">false</meta>
         <meta key="copy-protected">false</meta>
-        <entry path="pages" default="Viewer.msdd">
-            <file type="application/zip">Viewer.msdd</file>
+        <entry path="pages" default="AppSpaceViewers-2.5.0.0.msdd">
+            <file type="application/zip">AppSpaceViewers-2.5.0.0.msdd</file>
         </entry>
         <entry path="resources">
             <file type="image">coins.bmp</file>

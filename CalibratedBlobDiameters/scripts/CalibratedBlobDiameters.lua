@@ -18,7 +18,7 @@
   Results can be seen in the image viewer on the DevicePage.
   To run this sample a device with SICK Algorithm API is necessary.
   For example InspectorP or SIM4000 with latest firmware. Alternatively the
-  Emulator on AppStudio 2.2 or higher can be used. The images can be seen in the
+  Emulator on AppStudio 2.3 or higher can be used. The images can be seen in the
   image viewer on the DevicePage.
 
   More Information:
@@ -36,14 +36,13 @@ local DIAMETER_TOLERANCE = 1 -- in mm
 
 -- Creating viewer
 local viewer = View.create()
-viewer:setID('viewer2D')
 
 -- Shape decorations for pass/fail
-local passDecoration = View.ShapeDecoration.create()
-passDecoration:setFillColor(0, 255, 0, 100) -- Transparent green
+local passDecoration = View.PixelRegionDecoration.create()
+passDecoration:setColor(0, 255, 0, 100) -- Transparent green
 
-local failDecoration = View.ShapeDecoration.create()
-failDecoration:setFillColor(255, 0, 0, 100) -- Transparent red
+local failDecoration = View.PixelRegionDecoration.create()
+failDecoration:setColor(255, 0, 0, 100) -- Transparent red
 
 --End of Global Scope-----------------------------------------------------------
 
@@ -60,21 +59,26 @@ local function calibrate(checkerBoard)
 
   -- Correct the image of the calibration target as a test, using "align" mode
   local correction = Image.Calibration.Correction.create()
-  local cxy = squareSize * 6 -- Select center point for aligned image in both x and y
-  local sxy = squareSize * 13 -- Select the size of the alignment region in both x and y
+  local cxy = squareSize * 6   -- Select center point for aligned image in both x and y
+  local sxy = squareSize * 13  -- Select the size of the alignment region in both x and y
   local worldRectangle = Shape.createRectangle(Point.create(cxy, cxy), sxy, sxy)
   correction:setAlignMode(cameraModel, worldRectangle)
   local correctedImage = correction:apply(checkerBoard)
-  viewer:view(correctedImage)
+  viewer:clear()
+  viewer:addImage(correctedImage)
+  viewer:present()
   Script.sleep(DELAY) -- For demonstration purpose only
   return correction
 end
 
 --@measure(liveImage:Image,correction:Image.Calibration.Correction)
 local function measure(liveImage, correction)
+
   -- Rectify the image
   local correctedImage = correction:apply(liveImage)
-  viewer:view(correctedImage)
+  viewer:clear()
+  viewer:addImage(correctedImage)
+  viewer:present()
   Script.sleep(DELAY) -- For demonstration purpose only
 
   -- Find the coins
@@ -95,19 +99,20 @@ local function measure(liveImage, correction)
 
     -- Visualize pass/fail
     if math.abs(d - COIN_DIAMETER) <= DIAMETER_TOLERANCE then
-      viewer:add(coins[c], passDecoration)
+      viewer:addPixelRegion(coins[c], passDecoration)
     else
-      viewer:add(coins[c], failDecoration)
+      viewer:addPixelRegion(coins[c], failDecoration)
     end
 
     -- Add text with the measured size
     local text = View.TextDecoration.create()
     text:setPosition(center:getX() + r, center:getY() - r)
     text:setSize(8) -- Text size in mm
-    viewer:add(string.format('d = %.1f', d), text) -- Print result with one decimal
+    viewer:addText(string.format('d = %.1f', d), text) -- Print result with one decimal
 
     print('Diameter coin ' .. c .. ': ' .. string.format('d = %.2f', d))
   end
+
   viewer:present()
   print('App finished.')
 end
@@ -115,14 +120,20 @@ end
 local function main()
   -- Calibrate
   local checkerBoard = Image.load('resources/pose.bmp')
-  viewer:view(checkerBoard)
+  viewer:clear()
+  viewer:addImage(checkerBoard)
+  viewer:present()
   Script.sleep(DELAY) -- For demonstration purpose only
+
   local correction = calibrate(checkerBoard)
 
   -- Calibrated measurement in simulated "live image"
   local liveImage = Image.load('resources/coins.bmp')
-  viewer:view(liveImage)
+  viewer:clear()
+  viewer:addImage(liveImage)
+  viewer:present()
   Script.sleep(DELAY) -- For demonstration purpose only
+
   measure(liveImage, correction)
 end
 --The following registration is part of the global scope which runs once after startup
