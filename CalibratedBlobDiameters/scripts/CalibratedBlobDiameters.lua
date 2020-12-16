@@ -35,7 +35,7 @@ local COIN_DIAMETER = 19.75 -- in mm
 local DIAMETER_TOLERANCE = 1 -- in mm
 
 -- Creating viewer
-local viewer = View.create()
+local viewer = View.create('viewer2D1')
 
 -- Shape decorations for pass/fail
 local passDecoration = View.PixelRegionDecoration.create()
