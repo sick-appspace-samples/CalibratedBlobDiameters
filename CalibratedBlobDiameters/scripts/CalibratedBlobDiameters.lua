@@ -9,7 +9,7 @@ local COIN_DIAMETER = 19.75 -- in mm
 local DIAMETER_TOLERANCE = 1 -- in mm
 
 -- Creating viewer
-local viewer = View.create('viewer2D1')
+local viewer = View.create()
 
 -- Shape decorations for pass/fail
 local passDecoration = View.PixelRegionDecoration.create()
@@ -22,7 +22,8 @@ failDecoration:setColor(255, 0, 0, 100) -- Transparent red
 
 --Start of Function and Event Scope---------------------------------------------
 
---@calibrate(checkerBoard:Image):Image
+---@param checkerBoard Image
+---@return Image.Calibration.Correction
 local function calibrate(checkerBoard)
   -- Specify the size of a square in the world (for example 166 mm / 11 squares)
   local squareSize = 166.0 / 11 -- mm
@@ -45,7 +46,8 @@ local function calibrate(checkerBoard)
   return correction
 end
 
---@measure(liveImage:Image,correction:Image.Calibration.Correction)
+---@param liveImage Image
+---@param correction Image.Calibration.Correction
 local function measure(liveImage, correction)
 
   -- Rectify the image
